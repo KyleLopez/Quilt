@@ -1,0 +1,4 @@
+.git/
+errors/
+*.bak
+*.log
