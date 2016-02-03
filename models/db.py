@@ -90,3 +90,74 @@ auth.settings.reset_password_requires_verification = True
 
 ## after defining tables, uncomment below to enable auditing
 # auth.enable_record_versioning(db)
+
+## Facebook Stuff
+
+## Define oauth application id and secret.
+
+FB_CLIENT_ID='1704553463135174'
+FB_CLIENT_SECRET="ac7d14a11300e7c3ce8cef0b9bca83d4"
+
+## import required modules
+try:
+    import json
+except ImportError:
+    from gluon.contrib import simplejson as json
+from facebook import GraphAPI, GraphAPIError
+from gluon.contrib.login_methods.oauth20_account import OAuthAccount
+
+
+## extend the OAUthAccount class
+class FaceBookAccount(OAuthAccount):
+    """OAuth impl for FaceBook"""
+    AUTH_URL="https://graph.facebook.com/oauth/authorize"
+    TOKEN_URL="https://graph.facebook.com/oauth/access_token"
+
+    def __init__(self):
+        OAuthAccount.__init__(self, None, FB_CLIENT_ID, FB_CLIENT_SECRET,
+                              self.AUTH_URL, self.TOKEN_URL,
+                              scope='public_profile,email',
+                              state="auth_provider=facebook",
+                              display='popup')
+        self.graph = None
+
+    def get_user(self):
+        '''Returns the user using the Graph API.
+        '''
+        if not self.accessToken():
+            return None
+
+        if not self.graph:
+            self.graph = GraphAPI((self.accessToken()))
+
+        user = None
+        try:
+            user = self.graph.get_object("me")
+        except GraphAPIError, e:
+            session.token = None
+            self.graph = None
+
+        if user:
+            if not user.has_key('username'):
+                username = user['id']
+            else:
+                username = user['username']
+                
+            if not user.has_key('email'):
+                email = '%s.fakemail' %(user['id'])
+            else:
+                email = user['email']    
+
+            return dict(first_name = user['name'].split(' ')[0], #parse first name from name response
+                        last_name = user['name'].split(' ')[1], #parse last name from name response
+                        username = username,
+                        email = '%s' %(email) )
+
+## use the above class to build a new login form
+auth.settings.login_form=FaceBookAccount()
+
+# users table that we will fill from facebook
+
+db.define_table('users',
+                Field('token', unique=True),
+                Field('name'))

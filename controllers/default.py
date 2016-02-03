@@ -57,4 +57,6 @@ def call():
     """
     return service()
 
-
+def insert():
+    db.users.insert(token=request.args[0],name=request.args[1])
+    return
