@@ -60,3 +60,33 @@ def call():
 def insert():
     db.users.insert(token=request.args[0],name=request.args[1])
     return
+
+from PIL import Image
+import urllib2
+from StringIO import StringIO
+def my_form_processing(form):
+    try:
+        r = urllib2.urlopen(form.vars.url)
+        im = Image.open(StringIO(r.read()))
+        width, height = im.size
+        form.vars.height = height
+        form.vars.width = width
+        session.flash = form.vars.url
+    except:
+       form.errors.b = 'Image url invalid'
+
+@auth.requires_login()
+def display_form():
+   form = SQLFORM(db.images)
+   if form.process(onvalidation=my_form_processing).accepted:
+       session.flash = 'record inserted'
+       #redirect(URL())
+   elif form.errors:
+        response.flash = 'form has errors'
+   else:
+        response.flash = 'please fill the form'
+   return dict(form=form)
+
+def deleteimage(user, imageid):
+    db((db.images.id == imageid) & (db.images.user_id == user)).delete()
+    return

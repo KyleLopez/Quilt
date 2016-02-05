@@ -161,3 +161,10 @@ auth.settings.login_form=FaceBookAccount()
 db.define_table('users',
                 Field('token', unique=True),
                 Field('name'))
+
+db.define_table('images',
+    Field('user_id', db.auth_user, default=auth.user_id,readable=False, writable=False),
+    Field('url', 'string'),
+    Field('width', 'integer', readable=False, writable=False),
+    Field('height', 'integer', readable=False, writable=False))
+
