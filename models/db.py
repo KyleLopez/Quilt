@@ -9,6 +9,12 @@
 ## be redirected to HTTPS, uncomment the line below:
 # request.requires_https()
 
+db = DAL("sqlite://storage.sqlite")
+
+db.define_table('Panel',
+                Field('File', 'upload'),
+                Field('Description', 'text'))
+
 ## app configuration made easy. Look inside private/appconfig.ini
 from gluon.contrib.appconfig import AppConfig
 ## once in production, remove reload=True to gain full speed

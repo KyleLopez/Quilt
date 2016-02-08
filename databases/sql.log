@@ -61,3 +61,71 @@ CREATE TABLE users(
 );
 success!
 success!
+timestamp: 2016-02-07T23:16:34.824000
+CREATE TABLE Panel(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Title CHAR(512) UNIQUE,
+    File CHAR(512),
+    Description TEXT,
+    Listing_Status CHAR(1),
+    Name CHAR(512),
+    Email CHAR(512),
+    Phone_Number CHAR(512),
+    Category CHAR(512),
+    Date DATE,
+    Price DOUBLE
+);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
