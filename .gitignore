@@ -3,6 +3,7 @@ errors/
 compiled/
 sessions/
 databases/
+*.pyc
 *.bak
 *.log
 *.*~
