@@ -10,8 +10,7 @@
 
 
 def index():
-    return dict(message=T('Welcome to web2py!'))
-
+    return dict()
 
 def user():
     """

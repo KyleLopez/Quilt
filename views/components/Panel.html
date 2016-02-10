@@ -1,14 +1,9 @@
-<table id="t01">
-  <tr>
-    <td><img height = "200" width = "200"></td> <td><img height = "200" width = "200"></td> <td><img height = "200" width = "200"></td> <td><img height = "200" width = "200"></td>
-  </tr>
-  <tr>
-    <td><img height = "200" width = "200"></td> <td><img height = "200" width = "200"></td> <td><img height = "200" width = "200"></td> <td><img height = "200" width = "200"></td>
-  </tr>
-  <tr>
-    <td><img height = "200" width = "200"></td> <td><img height = "200" width = "200"></td> <td><img height = "200" width = "200"></td> <td><img height = "200" width = "200"></td>
-  </tr>
-  <tr>
-    <td><img height = "200" width = "200"></td> <td><img height = "200" width = "200"></td> <td><img height = "200" width = "200"></td> <td><img height = "200" width = "200"></td>
-  </tr>
+<table id = "{{=panel_name}}">
+    {{for i in xrange(0, rows):}}
+        <tr>
+            {{for j in xrange(0, columns):}}
+                <td><img id = "{{=panel_name}}_{{=i}}{{=j}}" height = "{{=height}}" width = "{{=width}}"></td>
+            {{pass}}
+        </tr>
+    {{pass}}
 </table>

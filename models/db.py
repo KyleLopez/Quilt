@@ -11,10 +11,6 @@
 
 db = DAL("sqlite://storage.sqlite")
 
-db.define_table('Panel',
-                Field('File', 'upload'),
-                Field('Description', 'text'))
-
 ## app configuration made easy. Look inside private/appconfig.ini
 from gluon.contrib.appconfig import AppConfig
 ## once in production, remove reload=True to gain full speed
@@ -173,4 +169,3 @@ db.define_table('images',
     Field('url', 'string'),
     Field('width', 'integer', readable=False, writable=False),
     Field('height', 'integer', readable=False, writable=False))
-

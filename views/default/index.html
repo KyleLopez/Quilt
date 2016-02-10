@@ -1,4 +1,24 @@
 <!-- {{#left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}} -->
 {{extend 'quilt_layout.html'}}
+<div id = "Panels">
+</div>
 
-{{include 'components/Panel.html'}}
+<script>
+    $(document).ready(
+    function(){
+        var panel_url = '{{=URL("components", "Panel")}}';
+        $("#Panels").load(panel_url);
+    })
+
+    $(window).scroll(
+    function(){
+        var $window = $(window);
+        var $body = $("body");
+        if($body.height()-($window.height()+$window.scrollTop()) <= 100) {
+           $body.height($body.height() + 500);
+        }
+        if($body.width()-($window.width()+$window.scrollLeft()) <= 100) {
+           $body.width($body.width() + 500);
+        }
+    })
+</script>
