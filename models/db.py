@@ -169,3 +169,15 @@ db.define_table('images',
     Field('url', 'string'),
     Field('width', 'integer', readable=False, writable=False),
     Field('height', 'integer', readable=False, writable=False))
+
+#table that contains image/tag relations
+#db.define_table('image_tag',
+#    Field('image_id', 'integer', db.images, readable=False, writable=False),
+#	Field('tag', notnull=True),
+#	primarykey=['image_id','tag'])
+
+#table that contains comment/tag relations
+#db.define_table('comments',
+#    Field('image_id', 'integer', db.images, readable=False, writable=False),
+#	Field('comment', notnull=True),
+#	Field('user_id', db.auth_user, default=auth.user_id, readable=False, writable=False))
