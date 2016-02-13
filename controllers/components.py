@@ -2,7 +2,7 @@
 # try something like
 panel_rows = 4
 panel_columns = 4
-height = width = 200
+height = width = 50
 
 
 def Panel():
