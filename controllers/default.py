@@ -10,7 +10,8 @@
 
 
 def index():
-    return dict()
+    images = db().select(db.image.ALL, orderby=db.image.x)
+    return dict(images=images)
 
 def user():
     """
@@ -53,7 +54,7 @@ def insert():
     db.users.insert(token=request.args[0],name=request.args[1])
     return
 
-from PIL import Image
+#from PIL import Image
 import urllib2
 from StringIO import StringIO
 def my_form_processing(form):

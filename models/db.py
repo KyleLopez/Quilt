@@ -164,11 +164,12 @@ db.define_table('users',
                 Field('token', unique=True),
                 Field('name'))
 
-db.define_table('images',
-    Field('user_id', db.auth_user, default=auth.user_id,readable=False, writable=False),
+db.define_table('image',
+    Field('title', unique=True),
     Field('url', 'string'),
-    Field('width', 'integer', readable=False, writable=False),
-    Field('height', 'integer', readable=False, writable=False))
+    Field('x', 'integer'),
+    Field('y', 'integer'),
+    format = '%(title)s')
 
 #table that contains image/tag relations
 #db.define_table('image_tag',

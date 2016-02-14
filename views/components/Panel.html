@@ -4,7 +4,11 @@
             <tr>
                 {{for j in xrange(0, panel_columns):}}
                     <td height="{{=height}}" width="{{=width}}">
-                        <img data-panel-row="{{=i}}" data-panel-column="{{=j}}" height="{{=height}}" width="{{=width}}">
+                       {{=A(IMG(_src=images[i+4*j].url, 
+                        _alt=images[i+4*j].title, 
+                        _height=height, 
+                        _width=width), 
+                        _href=images[i+4*j].url)}}
                     </td>
                 {{pass}}
             </tr>
