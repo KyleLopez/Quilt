@@ -1,9 +1,13 @@
-<table id = "{{=panel_name}}" style="display: inline-block">
-    {{for i in xrange(0, rows):}}
-        <tr>
-            {{for j in xrange(0, columns):}}
-                <td><img id = "{{=panel_name}}_{{=i}}{{=j}}" height = "{{=height}}" width = "{{=width}}"></td>
-            {{pass}}
-        </tr>
-    {{pass}}
-</table>
+<div id="column-{{=quilt_column}}" class="quilt-column" data-quilt-column="{{=quilt_column}}" >
+    <table cellspacing="0" cellpadding="0">
+        {{for i in xrange(0, panel_rows):}}
+            <tr>
+                {{for j in xrange(0, panel_columns):}}
+                    <td height="{{=height}}" width="{{=width}}">
+                        <img data-panel-row="{{=i}}" data-panel-column="{{=j}}" height="{{=height}}" width="{{=width}}">
+                    </td>
+                {{pass}}
+            </tr>
+        {{pass}}
+    </table>
+</div>

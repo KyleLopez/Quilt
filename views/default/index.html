@@ -1,13 +1,17 @@
 <!-- {{#left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}} -->
 {{extend 'quilt_layout.html'}}
-<div id = "Panels">
+<div id = "Quilt-body">
 </div>
 
 <script>
     $(document).ready(
     function(){
-        var panel_url = '{{=URL("components", "Panel")}}';
-        $("#Panels").load(panel_url);
+        var row = 0;
+        var row_url = '{{=URL("components", "Quilt")}}?row=' + row;
+        $("#Quilt-body").load(row_url, function() {
+            var panel_url = '{{=URL("components", "Panel")}}?col=0&row=0';
+            $("#row-" + row).load(panel_url);
+        });
     })
 
     $(window).scroll(
@@ -15,14 +19,44 @@
         var $window = $(window);
         var $body = $("body");
         if($body.height()-($window.height()+$window.scrollTop()) <= 100) {
-           var panel_url = '{{=URL("components", "Quilt")}}';
-           $body.height($body.height() + 500);
-           //$("#Panels").after($(("#Panels")).html())
+           var row_num = $(".quilt-row").length
+           var row_url = '{{=URL("components", "Quilt")}}?row=' + row_num;
+           $.get(row_url, function(row_data) {
+               $("#Quilt-body").append(row_data);
+               var panel_url = '{{=URL("components", "Panel")}}?col=0&row=' + row_num;
+               $.get(panel_url, function(panel_data) {
+                   $("#row-" + row_num).append(panel_data);
+               });
+           });
         }
         if($body.width()-($window.width()+$window.scrollLeft()) <= 100) {
-           var panel_url = '{{=URL("components", "Panel")}}';
-           $body.width($body.width() + 500);
-           $("#Panels").load(panel_url);
+           $(".quilt-row").each(function(i) {
+               var col_num = $("#row-" + i + " > .quilt-column").length;
+               var panel_url = '{{=URL("components", "Panel")}}?col=' + col_num;
+               $.get(panel_url, function(data) {
+                   $("#row-" + i).append(data);
+               });
+           });
         }
     })
 </script>
+<style>
+    table {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+        border-collapse: collapse;
+        border-spacing: 0;
+        border: 0;
+    }
+    tr, td {
+        margin: 0;
+        padding: 0;
+    }
+    .quilt-column {
+        float:left;
+    }
+    .quilt-row {
+        overflow: hidden;
+    }
+</style>
