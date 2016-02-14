@@ -4,11 +4,12 @@
             <tr>
                 {{for j in xrange(0, panel_columns):}}
                     <td height="{{=height}}" width="{{=width}}">
-                       {{=A(IMG(_src=images[i+4*j].url, 
-                        _alt=images[i+4*j].title, 
+                       {{idx=i*4+j}}
+                       {{=A(IMG(_src=images[idx].url, 
+                        _alt=images[idx].title, 
                         _height=height, 
                         _width=width), 
-                        _href=images[i+4*j].url)}}
+                        _href=images[idx].url)}}
                     </td>
                 {{pass}}
             </tr>

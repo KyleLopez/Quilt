@@ -10,7 +10,7 @@
 
 
 def index():
-    images = db().select(db.image.ALL, orderby=db.image.x)
+    images = db().select(db.image.ALL, orderby=db.image.x|db.image.y)
     return dict(images=images)
 
 def user():
@@ -83,3 +83,9 @@ def display_form():
 def deleteimage(user, imageid):
     db((db.images.id == imageid) & (db.images.user_id == user)).delete()
     return
+
+def add():
+    form = SQLFORM(db.image)
+    if form.process().accepted:
+        response.flash='new picture added'
+    return dict(form=form)
