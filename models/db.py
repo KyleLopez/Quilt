@@ -182,3 +182,6 @@ db.define_table('image',
 #    Field('image_id', 'integer', db.images, readable=False, writable=False),
 #	Field('comment', notnull=True),
 #	Field('user_id', db.auth_user, default=auth.user_id, readable=False, writable=False))
+
+db.define_table('flagged',
+    Field('image_id', 'reference image'))

@@ -89,3 +89,7 @@ def add():
     if form.process().accepted:
         response.flash='new picture added'
     return dict(form=form)
+
+def flag():
+    db.flagged.insert(image_id=request.args[0])
+    return
