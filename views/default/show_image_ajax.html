@@ -1,0 +1,52 @@
+{{extend 'quilt_layout.html'}}
+
+{{=IMG(_src=image.url, alt='picture')}}
+
+
+<button id='flagbutton'>
+Flag Image
+</button>
+
+<button id='unflagbutton'>
+Unflag Image
+</button>
+
+
+<script>
+    $(document).ready(function() {
+        $('#unflagbutton').hide();
+        $('#flagbutton').show();
+        $('#flagbutton').click(function() {
+            var url = '{{=URL("default", "flag", args=image.id)}}';
+            $.post(url, function() {
+                $('#flagbutton').toggle();
+                $('#unflagbutton').toggle();
+            });
+            $('#unflagbutton').click(function() {
+                var url2 = '{{=URL("default", "unflag", args=image.id)}}';
+                $.post(url2, function() {
+                    $('#flagbutton').toggle();
+                    $('#unflagbutton').toggle();
+            });
+        });
+      });
+    });
+</script>
+
+
+{{if len(comments):}}
+{{for comment in comments:}}
+<p>
+{{=comment.body}}
+</p>
+{{pass}}
+{{else:}}
+<p>
+No Comments
+</p>
+{{pass}}
+
+<h1>
+    Post A Comment
+</h1>
+{{=form}}

@@ -93,3 +93,23 @@ def add():
 def flag():
     db.flagged.insert(image_id=request.args[0])
     return
+
+def unflag():
+    image_id = request.args[0]
+    db(db.flagged.image_id==image_id).delete()
+    return
+
+def show_image():
+    image_id = request.args[0]
+    image = db(db.image.id==image_id).select().first()
+    return dict(image=image)
+
+def show_image_ajax():
+    image_id = request.args[0]
+    image = db(db.image.id==image_id).select().first()
+    comments = db(db.comments.image_id==image_id).select()
+    form = SQLFORM(db.comments, fields = ['body'])
+    form.vars.image_id = image_id
+    if form.process().accepted:
+        redirect(URL('default', 'show_image_ajax', args=image_id), client_side=True)
+    return dict(image=image, comments=comments, form=form)

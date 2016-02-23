@@ -185,3 +185,8 @@ db.define_table('image',
 
 db.define_table('flagged',
     Field('image_id', 'reference image'))
+
+db.define_table('comments',
+    Field('image_id', 'reference image'),
+    Field('body', 'text')
+)
