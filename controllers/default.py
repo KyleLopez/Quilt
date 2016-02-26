@@ -93,13 +93,20 @@ def show_image():
     image = db(db.image.id==image_id).select().first()
     return dict(image=image)
 
+import bleach
+
 def show_image_ajax():
+    if not request.args:
+        raise HTTP(400)
     image_id = request.args[0]
     image = db(db.image.id==image_id).select().first()
     comments = db(db.comments.image_id==image_id).select()
     form = SQLFORM(db.comments, fields = ['body'])
     form.vars.image_id = image_id
     if form.process().accepted:
+        text = form.vars.body
+        row = db(db.comments.id==form.vars.id).select().first()
+        row.update_record(body=bleach.clean(text))
         redirect(URL('default', 'show_image_ajax', args=image_id), client_side=True)
     return dict(image=image, comments=comments, form=form)
 
@@ -115,7 +122,6 @@ def confirmdelete():
     #    raise HTTP(401)
     return dict()
 
-import bleach
 def addtag():
     if not request.args:
         raise HTTP(400)

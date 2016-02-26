@@ -1,6 +1,8 @@
 {{extend 'quilt_layout.html'}}
 
-{{=IMG(_src=image.url, alt='picture')}}
+<img src="{{=URL('default', 'download', args=[image.im])}}" />
+
+<!--{{=IMG(_src=image.url, alt='picture')}}-->
 
 
 <button id='flagbutton'>

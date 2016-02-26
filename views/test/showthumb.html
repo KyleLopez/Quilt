@@ -1,0 +1,5 @@
+{{extend 'quilt_layout.html'}}
+
+<img src="{{=URL('default', 'download', args=[image.thumb])}}" />
+
+{{=BEAUTIFY(response._vars)}}

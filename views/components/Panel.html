@@ -9,7 +9,7 @@
                         _alt=images[idx].title, 
                         _height=height, 
                         _width=width), 
-                        _href=images[idx].url)}}
+                        _href=URL('default', 'show_image_ajax', args=[images[idx].id]))}}
                     </td>
                 {{pass}}
             </tr>

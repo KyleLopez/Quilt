@@ -168,6 +168,7 @@ db.define_table('image',
     Field('title', unique=True),
     Field('url', 'string'),
     Field('im', 'upload'),
+    Field('thumb', 'upload', writable=False, readable=False, default=None),
     Field('x', 'integer'),
     Field('y', 'integer'),
     format = '%(title)s')
