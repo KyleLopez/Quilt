@@ -54,39 +54,28 @@ def insert():
     db.users.insert(token=request.args[0],name=request.args[1])
     return
 
-#from PIL import Image
-import urllib2
-from StringIO import StringIO
-def my_form_processing(form):
-    try:
-        r = urllib2.urlopen(form.vars.url)
-        im = Image.open(StringIO(r.read()))
-        width, height = im.size
-        form.vars.height = height
-        form.vars.width = width
-        session.flash = form.vars.url
-    except:
-       form.errors.b = 'Image url invalid'
-
-@auth.requires_login()
-def display_form():
-   form = SQLFORM(db.images)
-   if form.process(onvalidation=my_form_processing).accepted:
-       session.flash = 'record inserted'
-       #redirect(URL())
-   elif form.errors:
-        response.flash = 'form has errors'
-   else:
-        response.flash = 'please fill the form'
-   return dict(form=form)
-
 def deleteimage(user, imageid):
     db((db.images.id == imageid) & (db.images.user_id == user)).delete()
     return
 
+import os
+import math
+from PIL import Image
 def add():
     form = SQLFORM(db.image)
     if form.process().accepted:
+        maxsize = 1080
+        im = form.vars.im
+        image = Image.open(os.path.join(request.folder, 'uploads',  im))
+        width, height = image.size
+        if width > maxsize or height > maxsize:
+            ratio = width/float(height)
+            size = (int(math.ceil(ratio*maxsize)), maxsize)
+            if width >= height:
+                ratio = height/float(width)
+                size = (maxsize, int(math.ceil(ratio*maxsize)))
+            im_location = os.path.join(request.folder, 'uploads',  im)
+            image.resize(size, Image.ANTIALIAS).save(im_location)
         response.flash='new picture added'
     return dict(form=form)
 
@@ -113,3 +102,52 @@ def show_image_ajax():
     if form.process().accepted:
         redirect(URL('default', 'show_image_ajax', args=image_id), client_side=True)
     return dict(image=image, comments=comments, form=form)
+
+@auth.requires_login()
+def confirmdelete():
+    if not request.args:
+        raise HTTP(400)
+    #try:
+    imageid = request.args[0]
+    db((db.images.id == imageid) & (db.images.user_id == auth.user_id)).delete()
+    redirect(URL('static', 'success'))
+    #except:
+    #    raise HTTP(401)
+    return dict()
+
+import bleach
+def addtag():
+    if not request.args:
+        raise HTTP(400)
+    imageid = request.args[0]
+    form = SQLFORM(db.image_tags)
+    text = ""
+    if form.process().accepted:
+        session.flash =  form.vars.tag
+        text = form.vars.tag
+        row = db(db.image_tags.id==form.vars.id).select().first()
+        row.update_record(tag=bleach.clean(text).lower())
+        row.update_record(image_id=imageid)
+    elif form.errors:
+        response.flash = 'Tag has errors'
+    else:
+        response.flash = 'Enter your tag'
+    return dict(form=form)
+
+#@auth.requires_login()
+def addcomment():
+    if not request.args:
+        raise HTTP(400)
+    imageid = request.args[0]
+    form = SQLFORM(db.comments)
+    text = ""
+    if form.process().accepted:
+        text = form.vars.body
+        row = db(db.comments.id==form.vars.id).select().first()
+        row.update_record(body=bleach.clean(text))
+        row.update_record(image_id=imageid)
+    elif form.errors:
+        response.flash = 'Comment has errors'
+    else:
+        response.flash = 'Enter your comment'
+    return dict(form=form)

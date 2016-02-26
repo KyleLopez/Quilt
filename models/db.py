@@ -167,26 +167,20 @@ db.define_table('users',
 db.define_table('image',
     Field('title', unique=True),
     Field('url', 'string'),
+    Field('im', 'upload'),
     Field('x', 'integer'),
     Field('y', 'integer'),
     format = '%(title)s')
 
-#table that contains image/tag relations
-#db.define_table('image_tag',
-#    Field('image_id', 'integer', db.images, readable=False, writable=False),
-#	Field('tag', notnull=True),
-#	primarykey=['image_id','tag'])
-
-#table that contains comment/tag relations
-#db.define_table('comments',
-#    Field('image_id', 'integer', db.images, readable=False, writable=False),
-#	Field('comment', notnull=True),
-#	Field('user_id', db.auth_user, default=auth.user_id, readable=False, writable=False))
-
 db.define_table('flagged',
     Field('image_id', 'reference image'))
 
+db.define_table('image_tags',
+                Field('image_id', db.image, readable=False, writable=False),
+                Field('tag',  notnull=False))
+
 db.define_table('comments',
-    Field('image_id', 'reference image'),
-    Field('body', 'text')
+    Field('image_id', 'reference image', readable=False, writable=False),
+    Field('body', 'text'),
+    Field('user_id', db.auth_user, default=auth.user_id, readable=False, writable=False)
 )
