@@ -116,6 +116,8 @@ def confirmdelete():
         raise HTTP(400)
     #try:
     imageid = request.args[0]
+    if db((db.images.id == imageid) & (db.images.user_id == auth.user_id)).isempty():
+        redirect(URL('static', 'nopermissions'))
     db((db.images.id == imageid) & (db.images.user_id == auth.user_id)).delete()
     redirect(URL('static', 'success'))
     #except:

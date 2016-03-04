@@ -1,4 +1,8 @@
-{{extend 'layout.html'}}
+{{extend 'quilt_layout.html'}}
 <h1>Add a picture to the Quilt</h1>
 {{=form}}
-{{=A('Back to Quilt', _href=URL("index"))}}
+<script>
+    $(document).ready(function() {
+        $("#image_im__label").text("Image");
+    });
+</script>

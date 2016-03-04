@@ -1,6 +1,6 @@
 {{extend 'quilt_layout.html'}}
 
-<img src="{{=URL('default', 'download', args=[image.im])}}" />
+<img src="{{=URL('default', 'download', args=[image.im])}}" style="display:block"/>
 
 <!--{{=IMG(_src=image.url, alt='picture')}}-->
 
@@ -13,10 +13,18 @@ Flag Image
 Unflag Image
 </button>
 
+<button id='deleteimage'>
+Delete Image
+</button>
 
 <script>
     $(document).ready(function() {
         $('#unflagbutton').hide();
+        $('#deleteimage').show();
+        $('#deleteimage').click(function(){
+            var url = '{{=URL("default", "confirmdelete", args=image.id)}}';
+            window.location.href=url;
+        });
         $('#flagbutton').show();
         $('#flagbutton').click(function() {
             var url = '{{=URL("default", "flag", args=image.id)}}';
@@ -35,7 +43,29 @@ Unflag Image
     });
 </script>
 
-
+<div id="disqus_thread" style="width:800px"</div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        //this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = image.id; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//quiltteam.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<!--
 {{if len(comments):}}
 {{for comment in comments:}}
 <p>
@@ -52,3 +82,4 @@ No Comments
     Post A Comment
 </h1>
 {{=form}}
+-->
