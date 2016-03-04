@@ -162,7 +162,8 @@ auth.settings.login_form=FaceBookAccount()
 
 db.define_table('users',
                 Field('token', unique=True),
-                Field('name'))
+                Field('name'),
+                Field('ip_add'))
 
 db.define_table('image',
     Field('title', unique=True),
@@ -171,6 +172,7 @@ db.define_table('image',
     Field('thumb', 'upload', writable=False, readable=False, default=None),
     Field('x', 'integer'),
     Field('y', 'integer'),
+    Field('ip_add'),
     format = '%(title)s')
 
 db.define_table('flagged',

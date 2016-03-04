@@ -51,7 +51,7 @@ def call():
     return service()
 
 def insert():
-    db.users.insert(token=request.args[0],name=request.args[1])
+    db.users.insert(token=request.args[0],name=request.args[1],ip_add=request.client)
     return
 
 def deleteimage(user, imageid):
@@ -62,7 +62,7 @@ import os
 import math
 from PIL import Image
 def add():
-    form = SQLFORM(db.image)
+    form = SQLFORM(db.image, hidden=dict(ip_add=request.client))
     if form.process().accepted:
         maxsize = 1080
         im = form.vars.im
