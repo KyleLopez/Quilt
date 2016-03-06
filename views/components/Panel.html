@@ -5,7 +5,6 @@
                 <span class='i-col'>
                    {{idx=i*4+j}}
                    {{=A(IMG(_src=URL('default','download', args=images[idx].im),
-                    _alt=images[idx].title,
                     _height=height,
                     _width=width),
                     _href=URL('default', 'show_image_ajax', args=[images[idx].id]))}}
@@ -22,7 +21,7 @@
     }
     .i-row {
         width:calc(4* {{=width}}px);
-        height:{{=height}}
+        height:{{=height}}px;
     }
     .i-col {
         padding:0;

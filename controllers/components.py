@@ -13,18 +13,10 @@ def Panel():
                  width=width,
                  images=images)
 
-def empty_panel():
-    return dict(quilt_column=request.vars['col'],
-                 panel_rows=panel_rows,
-                 panel_columns=panel_columns,
-                 height=height,
-                 width=width,
-                 images=None)
-
 def row():
     import math
     num_panels = math.ceil(float(request.vars['width']) / (panel_rows * width))
-    return dict(quilt_row=request.args(0),panels=int(num_panels))
+    return dict(quilt_row=request.args(0),panels=int(num_panels), panel_height=(panel_rows * height))
 
 def col():
-    return dict(quilt_column=request.args(0))
+    return dict(quilt_column=request.args(0), panel_width=(panel_columns * width))

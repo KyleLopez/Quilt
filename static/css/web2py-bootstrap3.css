@@ -28,11 +28,6 @@ div.w2p_flash.alert:hover {
     margin-top: 20px;
 }
 
-body {
-    height: 2000px;
-    width: 2000px;
-}
-
 div.error {
     width: auto;
     background: transparent;
