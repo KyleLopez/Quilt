@@ -1,14 +1,23 @@
 <div class='i-panel'>
+    {{img_idx = 0}}
     {{for i in xrange(0, panel_rows):}}
         <div class='i-row'>
             {{for j in xrange(0, panel_columns):}}
-                <span class='i-col'>
-                   {{idx=i*4+j}}
-                   {{=A(IMG(_src=URL('default','download', args=images[idx].im),
-                    _height=height,
-                    _width=width),
-                    _href=URL('default', 'show_image_ajax', args=[images[idx].id]))}}
-                </span>
+                {{if (images[img_idx] != None) and (images[img_idx].x == i) and (images[img_idx].y == j):}}
+                    <span class='i-col'>
+                       {{=A(IMG(_src=URL('default','download', args=images[img_idx].im),
+                        _height=height,
+                        _width=width),
+                        _href=URL('default', 'show_image_ajax', args=[images[img_idx].id]))}}
+                    </span>
+                    {{img_idx = img_idx + 1}}
+                {{else:}}
+                    <div class='i-col' style='display:inline-block'>
+                        <div class='i-col-empty'>
+                            {{=SPAN(_class="glyphicon glyphicon-picture", **{'_aria-hidden':'true'})}}
+                        </div>
+                    </div>
+                {{pass}}
             {{pass}}
         </div>
     {{pass}}
@@ -22,11 +31,21 @@
     .i-row {
         width:calc(4* {{=width}}px);
         height:{{=height}}px;
+        font-size:0;
     }
     .i-col {
         padding:0;
-        width:{{=width}};
-        height:{{=height}};
-        font-size:0;
+        width:{{=width}}px;
+        height:{{=height}}px;
+    }
+    .i-col-empty {
+        width:{{=width - 12}}px;
+        height:{{=height - 12}}px;
+        border-style:dashed;
+        border-width:1px;
+        position:relative;
+        top:5px;
+        left:5px;
+        font-size:32px;
     }
 </style>
