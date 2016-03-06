@@ -1,9 +1,11 @@
 <div class='i-panel'>
-    {{img_idx = 0}}
+    {{img_idx = 0
+      row_offset = row
+      col_offset = col}}
     {{for i in xrange(0, panel_rows):}}
         <div class='i-row'>
             {{for j in xrange(0, panel_columns):}}
-                {{if (images[img_idx] != None) and (images[img_idx].x == i) and (images[img_idx].y == j):}}
+                {{if (images[img_idx] != None) and (images[img_idx].x == i + row_offset) and (images[img_idx].y == j + col_offset):}}
                     <span class='i-col'>
                        {{=A(IMG(_src=URL('default','download', args=images[img_idx].im),
                         _height=height,
@@ -13,9 +15,11 @@
                     {{img_idx = img_idx + 1}}
                 {{else:}}
                     <div class='i-col' style='display:inline-block'>
-                        <div class='i-col-empty'>
-                            {{=SPAN(_class="glyphicon glyphicon-picture", **{'_aria-hidden':'true'})}}
-                        </div>
+                        <a href='{{=URL("default", "add", args=[i + row_offset,j + col_offset])}}'>
+                            <div class='i-col-empty'>
+                                {{=SPAN(_class="glyphicon glyphicon-picture", **{'_aria-hidden':'true'})}}
+                            </div>
+                        </a>
                     </div>
                 {{pass}}
             {{pass}}
@@ -37,6 +41,7 @@
         padding:0;
         width:{{=width}}px;
         height:{{=height}}px;
+        vertical-align: top;
     }
     .i-col-empty {
         width:{{=width - 12}}px;
@@ -47,5 +52,6 @@
         top:5px;
         left:5px;
         font-size:32px;
+        padding-left:5px;
     }
 </style>

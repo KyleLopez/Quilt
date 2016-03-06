@@ -36,7 +36,9 @@ import os
 import math
 from PIL import Image
 def add():
-    form = SQLFORM(db.image, hidden=dict(ip_add=request.client))
+    form = SQLFORM(db.image, hidden={'ip_add':request.client})
+    form.vars.x = request.args(0,cast=int)
+    form.vars.y = request.args(1,cast=int)
     if form.process().accepted:
         maxsize = 1080
         im = form.vars.im
@@ -51,6 +53,7 @@ def add():
             im_location = os.path.join(request.folder, 'uploads',  im)
             image.resize(size, Image.ANTIALIAS).save(im_location)
         response.flash='new picture added'
+        redirect(URL('index'))
     return dict(form=form)
 
 def flag():
