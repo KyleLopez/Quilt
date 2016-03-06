@@ -166,14 +166,11 @@ db.define_table('users',
                 Field('ip_add'))
 
 db.define_table('image',
-    Field('title', unique=True),
-    Field('url', 'string'),
     Field('im', 'upload', requires=IS_IMAGE()),
     Field('thumb', 'upload', writable=False, readable=False, default=None),
     Field('x', 'integer'),
     Field('y', 'integer'),
-    Field('ip_add'),
-    format = '%(title)s')
+    Field('ip_add'))
 
 db.define_table('flagged',
     Field('image_id', 'reference image'))
