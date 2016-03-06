@@ -1,20 +1,18 @@
-<div id="column-{{=quilt_column}}" class="quilt-column" data-quilt-column="{{=quilt_column}}" >
-    <div class='i-panel'>
-        {{for i in xrange(0, panel_rows):}}
-            <div class='i-row'>
-                {{for j in xrange(0, panel_columns):}}
-                    <span class='i-col'>
-                       {{idx=i*4+j}}
-                       {{=A(IMG(_src=URL('default','download', args=images[idx].im),
-                        _alt=images[idx].title,
-                        _height=height,
-                        _width=width),
-                        _href=URL('default', 'show_image_ajax', args=[images[idx].id]))}}
-                    </span>
-                {{pass}}
-            </div>
-        {{pass}}
-    </div>
+<div class='i-panel'>
+    {{for i in xrange(0, panel_rows):}}
+        <div class='i-row'>
+            {{for j in xrange(0, panel_columns):}}
+                <span class='i-col'>
+                   {{idx=i*4+j}}
+                   {{=A(IMG(_src=URL('default','download', args=images[idx].im),
+                    _alt=images[idx].title,
+                    _height=height,
+                    _width=width),
+                    _href=URL('default', 'show_image_ajax', args=[images[idx].id]))}}
+                </span>
+            {{pass}}
+        </div>
+    {{pass}}
 </div>
 
 <style>

@@ -4,18 +4,59 @@
 </div>
 
 <script>
-    $(document).ready(
-    function(){
-        var row = 0;
-        var row_url = '{{=URL("components", "Quilt")}}?row=' + row;
-        $("#Quilt-body").load(row_url, function() {
-            var panel_url = '{{=URL("components", "Panel")}}?col=0&row=0';
-            $("#row-" + row).load(panel_url);
-        });
-    })
+$(document).ready(function() {
+    $.fn.exists = function () {
+        return this.length !== 0;
+    }
 
-    $(window).scroll(
-    function(){
+    function place_row(row_data) {
+        var $quilt_row = $(row_data);
+        var row_id = $quilt_row.attr('id');
+        if (!$('#' + row_id).exists()) {
+            var row_num = $quilt_row.data('quilt_row');
+            if (row_num > 0) {
+                $('#row-' + (row_num - 1)).after(row_data);
+            } else {
+                $('#Quilt-body').append(row_data);
+            }
+        }
+    }
+
+    function place_col($row, col_data) {
+        var $quilt_col = $(col_data);
+        var col_id = $quilt_col.attr('id');
+        if (!$row.children('#' + col_id).exists()) {
+            var col_num = $quilt_col.data('quilt-column');
+            if (col_num > 0) {
+                $row.children('#column-' + (col_num - 1)).after(col_data);
+            } else {
+                $row.append(col_data);
+            }
+        }
+    }
+
+    var row = 0;
+    var row_url = '{{=URL("components", "row")}}/' + row + '?width=' + $(window).width();
+    $.get(row_url, function(row_data) {
+        place_row(row_data);
+        var $row = $(row_data);
+        var num_panels = $row.data('panels');
+        for (var col = 0; col < num_panels; col++) {
+            var col_url = '{{=URL("components", "col")}}/' + col;
+            $.get(col_url, function(data) {
+                var $row = $('#row-' + row);
+                var $col = $(data);
+                place_col($row, data);
+                var col_num = $col.data('quilt-column');
+                var panel_url = '{{=URL("components", "Panel")}}?col=' + col_num + '&row=0';
+                $.get(panel_url, function(data) {
+                    $('#row-0').children('#column-' + col_num).append(data);
+                });
+            });
+        }
+    });
+
+    $(window).scroll(function(){
         var $window = $(window);
         var $body = $("body");
         if($body.height()-($window.height()+$window.scrollTop()) <= 100) {
@@ -38,7 +79,8 @@
                });
            });
         }
-    })
+    });
+});
 </script>
 <style>
     table {
@@ -60,4 +102,3 @@
         overflow: hidden;
     }
 </style>
-{{=A('Add a picture to the Quilt', _href=URL("add"))}}
