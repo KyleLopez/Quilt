@@ -166,8 +166,8 @@ db.define_table('users',
                 Field('ip_add'))
 
 db.define_table('image',
-    Field('im', 'upload', requires=IS_IMAGE()),
-    Field('thumb', 'upload', writable=False, readable=False, default=None),
+    Field('im', 'upload', requires=IS_IMAGE(), autodelete=True),
+    Field('thumb', 'upload', writable=False, readable=False, default=None, autodelete=True),
     Field('x', 'integer'),
     Field('y', 'integer'),
     Field('ip_add'))
