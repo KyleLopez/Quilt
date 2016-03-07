@@ -65,7 +65,6 @@ def unflag():
     db(db.flagged.image_id==image_id).delete()
     return
 
-import bleach
 
 def show_image_ajax():
     if not request.args:
@@ -98,7 +97,7 @@ def addtag():
         session.flash =  form.vars.tag
         text = form.vars.tag
         row = db(db.image_tags.id==form.vars.id).select().first()
-        row.update_record(tag=bleach.clean(text).lower())
+        row.update_record(tag=text.lower())
         redirect(URL('default', 'show_image_ajax', args=imageid))
     elif form.errors:
         response.flash = 'Tag has errors'

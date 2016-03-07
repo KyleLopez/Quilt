@@ -177,7 +177,7 @@ db.define_table('flagged',
 
 db.define_table('image_tags',
                 Field('image_id', db.image, readable=False, writable=False),
-                Field('tag',  notnull=False))
+                Field('tag',  notnull=False, requires=IS_MATCH('^[A-Za-z0-9\-\_]*$', error_message='you may only use alphanumeric characters, underscores and dashes')))
 
 db.define_table('comments',
     Field('image_id', 'reference image', readable=False, writable=False),
