@@ -11,7 +11,6 @@ def pad_images(image_rows):
     n_image_rows.append(None)
     return n_image_rows
 
-@cache.action()
 def Panel():
     start_row = int(request.vars['row']) * panel_rows
     start_col = int(request.vars['col']) * panel_columns
