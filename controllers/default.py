@@ -65,11 +65,6 @@ def unflag():
     db(db.flagged.image_id==image_id).delete()
     return
 
-def show_image():
-    image_id = request.args[0]
-    image = db(db.image.id==image_id).select().first()
-    return dict(image=image)
-
 import bleach
 
 def show_image_ajax():
@@ -77,62 +72,43 @@ def show_image_ajax():
         raise HTTP(400)
     image_id = request.args[0]
     image = db(db.image.id==image_id).select().first()
-    comments = db(db.comments.image_id==image_id).select()
-    form = SQLFORM(db.comments, fields = ['body'])
-    form.vars.image_id = image_id
-    if form.process().accepted:
-        text = form.vars.body
-        row = db(db.comments.id==form.vars.id).select().first()
-        row.update_record(body=bleach.clean(text))
-        redirect(URL('default', 'show_image_ajax', args=image_id), client_side=True)
-    return dict(image=image, comments=comments, form=form)
+    tags = db(db.image_tags.image_id==image_id).select(db.image_tags.tag, distinct=True)
+    return dict(image=image, tags=tags)
 
-@auth.requires_login()
 def confirmdelete():
     if not request.args:
         raise HTTP(400)
     #try:
     imageid = request.args[0]
-    if db((db.images.id == imageid) & (db.images.user_id == auth.user_id)).isempty():
-        redirect(URL('static', 'nopermissions'))
-    db((db.images.id == imageid) & (db.images.user_id == auth.user_id)).delete()
-    redirect(URL('static', 'success'))
+    if db((db.image.id == imageid) and (db.image.ip_add == "|" + request.client + "|")).isempty():
+        return dict(message="You do not have permissions to delete this image")
+    db((db.image.id == imageid) and (db.image.ip_add == "|" + request.client + "|")).delete()
     #except:
     #    raise HTTP(401)
-    return dict()
+    return dict(message="Success")
 
 def addtag():
     if not request.args:
         raise HTTP(400)
     imageid = request.args[0]
     form = SQLFORM(db.image_tags)
+    form.vars.image_id=imageid
     text = ""
     if form.process().accepted:
         session.flash =  form.vars.tag
         text = form.vars.tag
         row = db(db.image_tags.id==form.vars.id).select().first()
         row.update_record(tag=bleach.clean(text).lower())
-        row.update_record(image_id=imageid)
+        redirect(URL('default', 'show_image_ajax', args=imageid))
     elif form.errors:
         response.flash = 'Tag has errors'
     else:
         response.flash = 'Enter your tag'
     return dict(form=form)
 
-#@auth.requires_login()
-def addcomment():
+def tagged():
     if not request.args:
         raise HTTP(400)
-    imageid = request.args[0]
-    form = SQLFORM(db.comments)
-    text = ""
-    if form.process().accepted:
-        text = form.vars.body
-        row = db(db.comments.id==form.vars.id).select().first()
-        row.update_record(body=bleach.clean(text))
-        row.update_record(image_id=imageid)
-    elif form.errors:
-        response.flash = 'Comment has errors'
-    else:
-        response.flash = 'Enter your comment'
-    return dict(form=form)
+    tag = request.args[0]
+    images = db(db.image_tags.tag==tag).select(db.image_tags.image_id, distinct=True)
+    return dict(images=images)

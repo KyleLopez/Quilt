@@ -1,0 +1,28 @@
+{{extend 'quilt_layout.html'}}
+<style>
+    .entry{
+        margin: auto;
+        width: 500px;
+        background: #F3F3F3;
+        border-width: 5px;
+        border: #fff;
+    }
+    img {
+        margin: 10px 100px 0px 100px;
+        width: 300px; height:300px;
+    }
+</style>
+{{for image in images:}}
+<div id="{{image.image_id}}" class="entry">
+    <a href="{{=URL('default', 'show_image_ajax', args=[image.image_id])}}">
+        <img src="{{=URL('default', 'download', args=[image.image_id.im])}}">
+    </a>
+    <div id="tags">
+        <b>TAGS:</b>
+        {{for tag in db(db.image_tags.image_id==image.image_id).select(db.image_tags.tag, distinct=True):}}
+            <a href="{{=URL('default', 'tagged', args=[tag.tag])}}">#{{=tag.tag}}&nbsp;</a>
+        {{pass}}
+    </div>
+</div>
+<br>
+{{pass}}
