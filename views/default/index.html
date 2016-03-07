@@ -13,7 +13,7 @@ $(document).ready(function() {
         var $quilt_row = $(row_data);
         var row_id = $quilt_row.attr('id');
         if (!$('#' + row_id).exists()) {
-            var row_num = $quilt_row.data('quilt_row');
+            var row_num = $quilt_row.data('quilt-row');
             if (row_num > 0) {
                 var $before = $('#row-' + (row_num - 1));
                 if ($before.exists()) {
@@ -27,12 +27,7 @@ $(document).ready(function() {
                     }
                 }
             } else {
-                var $after = $('#row-' + (row_num + 1));
-                if ($after.exists()) {
-                    $after.before(row_data);
-                } else {
-                    $('#Quilt-body').append(row_data);
-                }
+                $('#Quilt-body').prepend(row_data);
             }
         }
     }
@@ -55,12 +50,7 @@ $(document).ready(function() {
                     }
                 }
             } else {
-                var $after = $row.children('#column-' + (col_num + 1));
-                if ($after.exists()) {
-                    $after.before(col_data);
-                } else {
-                    $row.append(col_data);
-                }
+                $row.prepend(col_data);
             }
         }
     }
