@@ -1,11 +1,22 @@
 {{extend 'quilt_layout.html'}}
+
+<link href="{{=URL('static', 'css/show.css')}}" rel="stylesheet" type="text/css" />
+
 <style>
     #tags {
         width:800px;
         font-family: "Roboto","Helvetica Neue",Helvetica,Arial,sans-serif;
     }
 </style>
+
+<div id="container">
+
+<div id="pic">
 <img src="{{=URL('default', 'download', args=[image.im])}}" style="display:block"/>
+
+<button id='deleteimage'>
+Delete Image
+</button>
 
 <button id='flagbutton'>
 Flag Image
@@ -15,13 +26,42 @@ Flag Image
 Unflag Image
 </button>
 
-<button id='deleteimage'>
-Delete Image
-</button>
-
 <button id='addtag'>
 Add tag
 </button>
+
+<div id="tags">
+    <b>TAGS: </b>
+    {{for tag in tags:}}
+    <a href="{{=URL('default', 'tagged', args=[tag.tag])}}">#{{=tag.tag}}&nbsp;</a>
+    {{pass}}
+</div>
+<div id="disqus_thread" style="width:800px"</div>
+    
+</div>
+</div>
+
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        //this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = image.id; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//quiltteam.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
 <script>
     $(document).ready(function() {
         $('#unflagbutton').hide();
@@ -52,31 +92,5 @@ Add tag
       });
     });
 </script>
-<div id="tags">
-    <b>TAGS: </b>
-    {{for tag in tags:}}
-    <a href="{{=URL('default', 'tagged', args=[tag.tag])}}">#{{=tag.tag}}&nbsp;</a>
-    {{pass}}
-</div>
-<div id="disqus_thread" style="width:800px"</div>
-<script>
-    /**
-     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
-     */
-    
-    var disqus_config = function () {
-        //this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = image.id; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    
-    (function() {  // DON'T EDIT BELOW THIS LINE
-        var d = document, s = d.createElement('script');
-        
-        s.src = '//quiltteam.disqus.com/embed.js';
-        
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
+
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>

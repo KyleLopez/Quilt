@@ -1,14 +1,14 @@
 {{extend 'quilt_layout.html'}}
-<h1>Add a picture to the Quilt</h1>
-{{=form}}
-<script>
-    $(document).ready(function() {
-        $("#image_im__label").text("Image");
-    });
-</script>
 
-<style>
-    #image_x__row, #image_y__row, #image_ip_add__row {
-        display:none;
-    }
-</style>
+<link href="{{=URL('static', 'css/add.css')}}" rel="stylesheet" type="text/css" />
+
+
+{{=DIV(IMG(_src=URL('static','images/quilt.jpg'), _width='1500px', _height='250px'), _id='quilt')}}
+
+<div id='header'>
+Add Your Picture To The Quilt
+</div>
+
+<div id='form'>
+{{=form}}
+</div>

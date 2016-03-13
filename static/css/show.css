@@ -1,0 +1,41 @@
+#container {
+    position: relative;
+}
+
+#pic {
+    position: absolute;
+    left: 25px;
+    top: 25px;
+}
+
+#flagbutton {
+    float: right;
+    padding: 4px 12px;
+}
+
+#unflagbutton {
+    float: right;
+    padding: 4px 12px;
+}
+
+#deleteimage {
+    position: absolute;
+    right: 105px;
+    padding: 4px 12px;
+}
+
+#addtag {
+    position: absolute;
+    bottom: -125px;
+    padding: 4px 12px;
+}
+
+#tags {
+    position: absolute;
+    bottom: -75px;
+}
+
+#disqus_thread {
+    position: absolute;
+    bottom: -550px;
+}

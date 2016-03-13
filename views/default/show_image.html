@@ -1,0 +1,26 @@
+{{extend 'quilt_layout.html'}}
+
+{{=IMG(_src=image.url, alt='picture')}}
+
+{{=DIV(A('Flag this image as inappropriate',callback=URL('default', 'flag', args=image.id)), _id='flaglink')}}
+
+
+{{=DIV(A('Unflag',callback=URL('default', 'unflag', args=image.id)), _id='unflaglink')}}
+
+<script>
+    $(document).ready(function() {
+        
+        $('#unflaglink').hide();
+        $('#flaglink').show();
+        
+        $('#flaglink').click(function() {
+            $(this).toggle();
+            $('#unflaglink').toggle();
+        });
+        
+        $('#unflaglink').click(function() {
+            $(this).toggle();
+            $('#flaglink').toggle();
+        });
+    });
+</script>

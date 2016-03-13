@@ -168,9 +168,9 @@ db.define_table('users',
 db.define_table('image',
     Field('im', 'upload', requires=IS_IMAGE(), autodelete=True),
     Field('thumb', 'upload', writable=False, readable=False, default=None, autodelete=True),
-    Field('x', 'integer'),
-    Field('y', 'integer'),
-    Field('ip_add'))
+    Field('x', 'integer', writable=False, readable=False),
+    Field('y', 'integer', writable=False, readable=False),
+    Field('ip_add', writable=False, readable=False))
 
 db.define_table('flagged',
     Field('image_id', 'reference image'))
