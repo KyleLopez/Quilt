@@ -1,20 +1,29 @@
 #header {
-    font-size: 400%;
+    position: relative;
+    background-image: url('http://127.0.0.1:8000/Quilt/static/images/quilt.jpg');
+    height: 400px;
+    text-align: center;
+}
+
+#text {
+    width: 100%;
+    margin: auto;
+    position: absolute;
+    margin-top: 150px;
+    font-size: 500%;
     color: white;
     text-shadow: 0px 0px 3px #000, -1px -1px #000, 1px 1px #000;
-    position: relative;
-    top: -175px;
-    text-align: center
+    text-align: center;
 }
 
 #form {
     color: white;
     position: relative;
-    left: 450px;
-    bottom: 50px
+    left: 42%;
+    top: 25px;
 }
 
-#quilt {
-    text-align: center;
-    padding-top: .5cm
+.btn {
+    position: absolute;
+    left: 24px;
 }
