@@ -12,7 +12,9 @@ $(document).ready(function() {
     function place_row(row_data) {
         var $quilt_row = $(row_data);
         var row_id = $quilt_row.attr('id');
-        if (!$('#' + row_id).exists()) {
+        if ($('#' + row_id).exists()) {
+            return false;
+        } else {
             var row_num = $quilt_row.data('quilt-row');
             if (row_num > 0) {
                 var $before = $('#row-' + (row_num - 1));
@@ -30,12 +32,16 @@ $(document).ready(function() {
                 $('#Quilt-body').prepend(row_data);
             }
         }
+        return true;
     }
 
     function place_col($row, col_data) {
         var $quilt_col = $(col_data);
         var col_id = $quilt_col.attr('id');
-        if (!$row.children('#' + col_id).exists()) {
+        var row_num = $row.data('quilt-row');
+        if ($row.children('#' + col_id).exists()) {
+            return false;
+        } else {
             var col_num = $quilt_col.data('quilt-column');
             if (col_num > 0) {
                 var $before = $row.children('#column-' + (col_num - 1));
@@ -53,6 +59,7 @@ $(document).ready(function() {
                 $row.prepend(col_data);
             }
         }
+        return $('#row-' + row_num).children('#column-' + col_num);
     }
 
 
@@ -81,6 +88,52 @@ $(document).ready(function() {
             });
         })(row);
     }
+
+    $('#Quilt-body').on('appear', '.quilt-column', function (event, $col) {
+        if ($.trim($col.html()) == '') {
+            var col_num = $col.data('quilt-column');
+            var row_num = $col.parent('.quilt-row').data('quilt-row');
+            var panel_url = '{{=URL("components", "Panel")}}?col=' + col_num + '&row=' + row_num;
+            $.get(panel_url, function(data) {
+                $('#row-' + row_num).children('#column-' + col_num).append(data);
+            });
+        }
+    });
+
+    $(window).scroll(function() {
+        var $window = $(window);
+        var $body = $(document);
+        if ($body.height() - ($window.height() + $window.scrollTop()) <= 100) {
+            var row_num = $(".quilt-row").length
+            var row_url = '{{=URL("components", "row")}}/' + row_num + '?width=' + $body.width();
+            $.get(row_url, function(row_data) {
+                if (place_row(row_data)) {
+                    var $row = $(row_data);
+                    var num_panels = $row.data('panels');
+                    for (var col = 0; col < num_panels; col++) {
+                        var col_url = '{{=URL("components", "col")}}/' + col;
+                        $.get(col_url, function(data) {
+                            var $row = $('#row-' + row_num);
+                            var $col = $(data);
+                            place_col($row, data).appear();
+                        });
+                    }
+                }
+            });
+        }
+
+        if ($body.width() - ($window.width() + $window.scrollLeft()) <= 100) {
+            var col_num = $("#row-0 > .quilt-column").length;
+            $(".quilt-row").each(function(i) {
+                var col_url = '{{=URL("components", "col")}}/' + col_num;
+                $.get(col_url, function(data) {
+                    var $row = $('#row-' + i);
+                    var $col = $(data);
+                    place_col($row, data).appear();
+                });
+            });
+        }
+    });
 });
 </script>
 <style>
