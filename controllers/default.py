@@ -79,9 +79,9 @@ def confirmdelete():
         raise HTTP(400)
     #try:
     imageid = request.args[0]
-    if db((db.image.id == imageid) and (db.image.ip_add == "|" + request.client + "|")).isempty():
+    if db((db.image.id == imageid) & (db.image.ip_add == request.client)).isempty():
         return dict(message="You do not have permissions to delete this image")
-    db((db.image.id == imageid) and (db.image.ip_add == "|" + request.client + "|")).delete()
+    db((db.image.id == imageid) & (db.image.ip_add == request.client )).delete()
     #except:
     #    raise HTTP(401)
     return dict(message="Success")
